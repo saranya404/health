@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us | Health Horizon</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-blue: #3a7bd5;
+            --light-blue: #a8d8ea;
+            --dark-blue: #1a4b8c;
+            --white: #ffffff;
+            --light-gray: #f8f9fa;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light-gray);
+        }
+        
+        .contact-header {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--dark-blue) 100%);
+            color: white;
+            padding: 80px 0;
+            margin-bottom: 50px;
+        }
+        
+        .contact-card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            background-color: var(--white);
+            padding: 40px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .contact-icon {
+            font-size: 3rem;
+            color: var(--primary-blue);
+            margin-bottom: 20px;
+        }
+        
+        .email-btn {
+            background-color: var(--primary-blue);
+            border: none;
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .email-btn:hover {
+            background-color: var(--dark-blue);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(58, 123, 213, 0.3);
+        }
+        
+        .info-item {
+            margin-bottom: 25px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+        <div class="container">
+            <a href="index.html" class="navbar-brand d-flex align-items-center">
+                <img src="img/logo1.jpg" alt="Health Horizon Logo" class="me-2" style="height: 40px;">
+                <h1 class="m-0 text-primary">Health Horizon</h1>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Contact Header -->
+    <div class="contact-header text-center">
+        <div class="container">
+            <h1 class="display-4 fw-bold mb-4">Contact Our Team</h1>
+            <p class="lead">Get in touch for support or inquiries</p>
+        </div>
+    </div>
+
+    <!-- Contact Section -->
+    <section class="container mb-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="contact-card">
+                    <i class="fas fa-envelope contact-icon"></i>
+                    <h2 class="mb-3">Email Us Directly</h2>
+                    <p class="mb-4">Click the button below to open your default email client and send us a message:</p>
+                    
+                    <a href="mailto:horizonhealth89@gmail.com?subject=Inquiry%20for%20HealthHorizon&body=Your%20Name%20%3A%20%22Enter%20Your%20Name%22" 
+                       class="btn email-btn text-white">
+                        <i class="fas fa-paper-plane me-2"></i> Email Us Now
+                    </a>
+                    
+                    <div class="mt-5 pt-4 border-top">
+                        <h4 class="mb-4">Or use these alternative methods:</h4>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="info-item">
+                                    <h5><i class="fas fa-phone-alt text-primary me-2"></i> Call Us</h5>
+                                    <p>+1 (555) 123-4567</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="info-item">
+                                    <h5><i class="fas fa-map-marker-alt text-primary me-2"></i> Visit Us</h5>
+                                    <p>123 Health Avenue, Cityville</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

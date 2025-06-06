@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Horizon | Disease Risk Map</title>
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    
+    <style>
+        :root {
+            --primary-blue: #a8d8ea;
+            --dark-blue: #3a7bd5;
+            --white: #ffffff;
+            --shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--white) 100%);
+            padding: 20px;
+        }
+
+        .map-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            color: var(--dark-blue);
+            margin-bottom: 10px;
+        }
+
+        #map {
+            height: 600px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .risk-filters {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            justify-content: center;
+        }
+
+        .risk-btn {
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            background: white;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+        }
+
+        .risk-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .risk-btn.active {
+            background: var(--dark-blue);
+            color: white;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .red { background-color: #ff0000; }
+        .yellow { background-color: #ffa500; }
+        .green { background-color: #00ff00; }
+
+        .legend {
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: var(--shadow);
+            margin-top: 20px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin: 5px 0;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+    <div class="map-container">
+        <div class="header">
+            <div class="risk-filters">
+                <button class="risk-btn" onclick="filterRisk('all')">
+                    <span class="dot" style="background: #666"></span>
+                    All Areas
+                </button>
+                <button class="risk-btn" onclick="filterRisk('high')">
+                    <span class="dot red"></span>
+                    High Risk Areas
+                </button>
+                <button class="risk-btn" onclick="filterRisk('medium')">
+                    <span class="dot yellow"></span>
+                    Medium Risk Areas
+                </button>
+                <button class="risk-btn" onclick="filterRisk('low')">
+                    <span class="dot green"></span>
+                    Low Risk Areas
+                </button>
+            </div>
+            <h1>Disease Risk Map</h1>
+            <p>Real-time visualization of disease spread risk across regions</p>
+        </div>
+        
+        <div id="map"></div>
+        
+        <div class="legend">
+            <h3>Risk Levels</h3>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #ff0000;"></div>
+                <span>High Risk</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #ffa500;"></div>
+                <span>Medium Risk</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #00ff00;"></div>
+                <span>Low Risk</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Panchayat coordinates mapping
+        const PANCHAYAT_COORDINATES = {
+            'Aluva': [10.1004, 76.3570],
+            'Angamaly': [10.1960, 76.3860],
+            'Kalady': [10.1632, 76.3704],
+            'Perumbavoor': [10.1071, 76.4735],
+            'Kothamangalam': [10.0578, 76.6228],
+            'Muvattupuzha': [9.9894, 76.5790],
+            'Piravom': [9.8697, 76.4929],
+            'Kolenchery': [9.9815, 76.4760],
+            'Tripunithura': [9.9451, 76.3457],
+            'Kalamassery': [10.0559, 76.2711],
+            'Kizhakkambalam': [10.0373, 76.4086],
+            'Puthenvelikkara': [10.1150, 76.2050],
+            'Thiruvaniyoor': [10.0319, 76.3519],
+            'Vypin': [10.0856, 76.1911],
+            'Udayamperoor': [9.8968, 76.3781],
+            'Elanji' : [10.0860, 76.4740]
+        };
+
+        let map;
+        let markers = [];
+
+        //fetching data from the api
+        
+        //1.When fetchRiskData() is called in map.html:
+       //Makes HTTP GET request to Flask backend
+      //URL: http://127.0.0.1:5000/get_disease_data
+
+      //2.Flask backend processes the request:
+        //Queries Firebase database
+        //Gets disease reports
+        //Calculates risk levels
+        //Returns JSON response
+
+        async function fetchRiskData() {
+            // Fetches latest disease reports from the backend
+            // Allows real-time updates of risk levels
+            // Shows current disease spread situation
+    try {
+        const response = await fetch('http://127.0.0.1:5000/get_disease_data');
+        const data = await response.json();
+        
+        if (!data.success) {
+            throw new Error('API request was not successful');
+        }
+        
+        return data.reports || [];  // Return the reports array directly
+    } catch (error) {
+        console.error('Error fetching disease data:', error);
+        return [];
+    }
+}
+
+        function getRiskColor(status) {
+            if (status === "High Risk") return '#ff0000';
+            if (status === "Medium Risk") return '#ffa500';
+            return '#00ff00';
+        }
+
+        function filterRisk(riskLevel) {
+            document.querySelectorAll('.risk-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+
+            markers.forEach(marker => {
+                // Creates markers for each disease report
+    // Color codes based on risk level
+    // Shows geographical distribution of diseases
+                const status = marker.options.status;
+                if (riskLevel === 'all' || 
+                   (riskLevel === 'high' && status === "High Risk") ||
+                   (riskLevel === 'medium' && status === "Medium Risk") ||
+                   (riskLevel === 'low' && status === "Low Risk")) {
+                    marker.addTo(map);
+                } else {
+                    marker.remove();
+                }
+            });
+        }
+
+        async function initMap() {
+            try {
+                // Check authentication
+                const user = localStorage.getItem('user');
+                if (!user) {
+                    window.location.href = 'auth.html';
+                    return;
+                }
+
+                map = L.map('map').setView([10.1004, 76.3570], 11);
+
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '© OpenStreetMap contributors'
+                }).addTo(map);
+
+                const diseaseData = await fetchRiskData();
+                
+                markers.forEach(marker => marker.remove());
+                markers = [];
+
+                diseaseData.forEach(report => {
+                    const coordinates = PANCHAYAT_COORDINATES[report.source];
+                    if (!coordinates) {
+                        console.warn(`No coordinates found for: ${report.source}`);
+                        return;
+                    }
+
+                    const color = getRiskColor(report.status);
+                    
+                    const marker = L.circle(coordinates, {
+                        color: color,
+                        fillColor: color,
+                        fillOpacity: 0.5,
+                        radius: 500,
+                        status: report.status
+                    })
+                    .bindPopup(`
+                        <div style="padding: 10px;">
+                            <h3 style="color: #3a7bd5; margin-bottom: 5px;">
+                                ${report.source}
+                            </h3>
+                            <p><strong>Disease:</strong> ${report.disease}</p>
+                            <p><strong>Risk Level:</strong> ${report.status}</p>
+                            <p><strong>Travel Duration:</strong> ${report.duration} days</p>
+                            <p><strong>Destination:</strong> ${report.destination}</p>
+                        </div>
+                    `);
+                    
+                    markers.push(marker);
+                    marker.addTo(map);
+                });
+
+            } catch (error) {
+                console.error('Error initializing map:', error);
+                alert('Error loading map data. Please try again later.');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', initMap);
+    </script>
+</body>
+</html>

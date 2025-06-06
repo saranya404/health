@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Symptoms & Early Detection | Health Horizon</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-blue: #3a7bd5;
+            --light-blue: #a8d8ea;
+            --dark-blue: #1a4b8c;
+            --white: #ffffff;
+            --light-gray: #f8f9fa;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light-gray);
+        }
+        
+        .symptoms-header {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--dark-blue) 100%);
+            color: white;
+            padding: 80px 0;
+            margin-bottom: 50px;
+        }
+        
+        .disease-card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            background-color: var(--white);
+            margin-bottom: 30px;
+            transition: transform 0.3s ease;
+            overflow: hidden;
+        }
+        
+        .disease-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-header {
+            background-color: var(--light-blue);
+            color: var(--dark-blue);
+            font-weight: 600;
+            padding: 15px 20px;
+            border-bottom: none;
+        }
+        
+        .symptom-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        
+        .symptom-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+        }
+        
+        .symptom-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .symptom-list li i {
+            color: var(--primary-blue);
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .warning-badge {
+            background-color: #fff3e0;
+            color: #e65100;
+            font-weight: 500;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            display: inline-block;
+            margin-left: 10px;
+        }
+        
+        .detection-tip {
+            background-color: var(--light-blue);
+            border-left: 4px solid var(--primary-blue);
+            padding: 15px;
+            border-radius: 0 5px 5px 0;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+        <div class="container">
+            <a href="index.html" class="navbar-brand d-flex align-items-center">
+                <img src="logo.jpg" alt="Health Horizon Logo" class="me-2" style="height: 40px;">
+                <h1 class="m-0 text-primary">Health Horizon</h1>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <div class="symptoms-header text-center">
+        <div class="container">
+            <h1 class="display-4 fw-bold mb-4">Symptoms & Early Detection</h1>
+            <p class="lead">Recognize warning signs and take timely action</p>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <section class="container mb-5">
+        <div class="row">
+            <div class="col-lg-4 col-md-6">
+                <div class="disease-card card h-100">
+                    <div class="card-header">
+                        <i class="fas fa-biohazard me-2"></i> Malaria
+                    </div>
+                    <div class="card-body">
+                        <h5 class="text-primary">Common Symptoms:</h5>
+                        <ul class="symptom-list">
+                            <li><i class="fas fa-check-circle"></i> High fever (up to 104°F/40°C)</li>
+                            <li><i class="fas fa-check-circle"></i> Chills and sweating</li>
+                            <li><i class="fas fa-check-circle"></i> Headache and muscle pain</li>
+                            <li><i class="fas fa-check-circle"></i> Fatigue and weakness</li>
+                            <li><i class="fas fa-check-circle"></i> Nausea and vomiting</li>
+                        </ul>
+                        
+                        <div class="detection-tip">
+                            <h6><i class="fas fa-lightbulb"></i> Early Detection Tip:</h6>
+                            <p>Suspect malaria if fever occurs 7-30 days after visiting endemic areas. Rapid diagnostic tests can confirm within 15 minutes.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6">
+                <div class="disease-card card h-100">
+                    <div class="card-header">
+                        <i class="fas fa-virus me-2"></i> Dengue Fever
+                    </div>
+                    <div class="card-body">
+                        <h5 class="text-primary">Common Symptoms:</h5>
+                        <ul class="symptom-list">
+                            <li><i class="fas fa-check-circle"></i> Sudden high fever</li>
+                            <li><i class="fas fa-check-circle"></i> Severe headache</li>
+                            <li><i class="fas fa-check-circle"></i> Pain behind eyes</li>
+                            <li><i class="fas fa-check-circle"></i> Muscle and joint pain <span class="warning-badge">Characteristic</span></li>
+                            <li><i class="fas fa-check-circle"></i> Skin rash</li>
+                        </ul>
+                        
+                        <div class="detection-tip">
+                            <h6><i class="fas fa-lightbulb"></i> Early Detection Tip:</h6>
+                            <p>Watch for "dengue triad": fever, rash, and headache. Low platelet count on blood tests is a warning sign.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6">
+                <div class="disease-card card h-100">
+                    <div class="card-header">
+                        <i class="fas fa-lungs-virus me-2"></i> COVID-19
+                    </div>
+                    <div class="card-body">
+                        <h5 class="text-primary">Common Symptoms:</h5>
+                        <ul class="symptom-list">
+                            <li><i class="fas fa-check-circle"></i> Fever or chills</li>
+                            <li><i class="fas fa-check-circle"></i> Persistent cough</li>
+                            <li><i class="fas fa-check-circle"></i> Shortness of breath</li>
+                            <li><i class="fas fa-check-circle"></i> Loss of taste/smell <span class="warning-badge">Distinctive</span></li>
+                            <li><i class="fas fa-check-circle"></i> Fatigue</li>
+                        </ul>
+                        
+                        <div class="detection-tip">
+                            <h6><i class="fas fa-lightbulb"></i> Early Detection Tip:</h6>
+                            <p>RT-PCR tests can detect infection before symptoms appear. Rapid antigen tests are effective 5-7 days post-exposure.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Additional Disease Cards -->
+            <div class="col-lg-4 col-md-6">
+                <div class="disease-card card h-100">
+                    <div class="card-header">
+                        <i class="fas fa-temperature-high me-2"></i> Chikungunya
+                    </div>
+                    <div class="card-body">
+                        <h5 class="text-primary">Common Symptoms:</h5>
+                        <ul class="symptom-list">
+                            <li><i class="fas fa-check-circle"></i> High fever</li>
+                            <li><i class="fas fa-check-circle"></i> Severe joint pain <span class="warning-badge">Debilitating</span></li>
+                            <li><i class="fas fa-check-circle"></i> Muscle pain</li>
+                            <li><i class="fas fa-check-circle"></i> Headache</li>
+                            <li><i class="fas fa-check-circle"></i> Rash</li>
+                        </ul>
+                        
+                        <div class="detection-tip">
+                            <h6><i class="fas fa-lightbulb"></i> Early Detection Tip:</h6>
+                            <p>Differentiate from dengue by the intensity of joint pain. Symptoms appear 3-7 days after mosquito bite.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6">
+                <div class="disease-card card h-100">
+                    <div class="card-header">
+                        <i class="fas fa-bacterium me-2"></i> Tuberculosis
+                    </div>
+                    <div class="card-body">
+                        <h5 class="text-primary">Common Symptoms:</h5>
+                        <ul class="symptom-list">
+                            <li><i class="fas fa-check-circle"></i> Persistent cough (3+ weeks)</li>
+                            <li><i class="fas fa-check-circle"></i> Chest pain</li>
+                            <li><i class="fas fa-check-circle"></i> Coughing up blood</li>
+                            <li><i class="fas fa-check-circle"></i> Fatigue</li>
+                            <li><i class="fas fa-check-circle"></i> Weight loss</li>
+                        </ul>
+                        
+                        <div class="detection-tip">
+                            <h6><i class="fas fa-lightbulb"></i> Early Detection Tip:</h6>
+                            <p>Sputum tests and chest X-rays can detect TB. Latent TB shows no symptoms but can be detected via skin or blood tests.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6">
+                <div class="disease-card card h-100">
+                    <div class="card-header">
+                        <i class="fas fa-head-side-cough me-2"></i> Influenza
+                    </div>
+                    <div class="card-body">
+                        <h5 class="text-primary">Common Symptoms:</h5>
+                        <ul class="symptom-list">
+                            <li><i class="fas fa-check-circle"></i> Sudden fever</li>
+                            <li><i class="fas fa-check-circle"></i> Dry cough</li>
+                            <li><i class="fas fa-check-circle"></i> Sore throat</li>
+                            <li><i class="fas fa-check-circle"></i> Runny/stuffy nose</li>
+                            <li><i class="fas fa-check-circle"></i> Body aches</li>
+                        </ul>
+                        
+                        <div class="detection-tip">
+                            <h6><i class="fas fa-lightbulb"></i> Early Detection Tip:</h6>
+                            <p>Rapid influenza tests can confirm within 15 minutes. Antiviral treatment works best when started within 48 hours.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- General Detection Advice -->
+        <div class="row mt-5">
+            <div class="col-12">
+                <div class="card border-primary">
+                    <div class="card-header bg-primary text-white">
+                        <i class="fas fa-microscope me-2"></i> General Early Detection Guidelines
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h5 class="text-primary"><i class="fas fa-check-circle"></i> When to Seek Medical Help:</h5>
+                                <ul>
+                                    <li>Fever lasting more than 3 days</li>
+                                    <li>Difficulty breathing or chest pain</li>
+                                    <li>Persistent vomiting</li>
+                                    <li>Confusion or dizziness</li>
+                                    <li>Severe dehydration symptoms</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <h5 class="text-primary"><i class="fas fa-clipboard-check"></i> Prevention Tips:</h5>
+                                <ul>
+                                    <li>Get recommended vaccinations</li>
+                                    <li>Practice good hand hygiene</li>
+                                    <li>Use insect repellent in endemic areas</li>
+                                    <li>Maintain proper sanitation</li>
+                                    <li>Report symptoms early to health authorities</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Horizon | Dashboard</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-blue: #a8d8ea;
+            --pastel-blue: #d4f1f9;
+            --dark-blue: #3a7bd5;
+            --white: #ffffff;
+            --light-gray: #f8f9fa;
+            --dark-gray: #333333;
+            --shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            --sidebar-width: 280px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--light-gray);
+            color: var(--dark-gray);
+        }
+
+        .dashboard-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--white);
+            box-shadow: var(--shadow);
+            position: fixed;
+            height: 100%;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-header {
+            padding: 25px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .sidebar-header .logo {
+            width: 40px;
+            height: 40px;
+            background-color: var(--dark-blue);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+        }
+
+        .sidebar-header .logo i {
+            color: var(--white);
+            font-size: 1.2rem;
+        }
+
+        .sidebar-header h2 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var (--dark-blue);
+        }
+
+        .sidebar-menu {
+            padding: 20px 0;
+            flex-grow: 1;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            padding: 14px 25px;
+            color: var(--dark-gray);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            margin: 5px 10px;
+            border-radius: 8px;
+        }
+
+        .sidebar-menu a i {
+            margin-right: 12px;
+            width: 20px;
+            text-align: center;
+            font-size: 1.1rem;
+            color: #666;
+        }
+
+        .sidebar-menu a:hover {
+            background-color: var(--pastel-blue);
+            color: var(--dark-blue);
+        }
+
+        .sidebar-menu a:hover i {
+            color: var(--dark-blue);
+        }
+
+        .sidebar-menu a.active {
+            background-color: var(--pastel-blue);
+            color: var (--dark-blue);
+            font-weight: 500;
+        }
+
+        .sidebar-menu a.active i {
+            color: var(--dark-blue);
+        }
+
+        .sidebar-footer {
+            padding: 20px;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .avatar {
+            width: 45px;
+            height: 45px;
+            background-color: var(--dark-blue);
+            color: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            font-weight: 600;
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-info .username {
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+
+        .user-info .panchayat {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .btn-logout {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--pastel-blue);
+            color: var(--dark-blue);
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-logout i {
+            margin-right: 8px;
+        }
+
+        .btn-logout:hover {
+            background-color: var(--dark-blue);
+            color: var(--white);
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            padding: 30px;
+            background-color: var(--light-gray);
+        }
+
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .content-header h1 {
+            font-size: 1.8rem;
+            color: var(--dark-gray);
+            font-weight: 600;
+        }
+
+        .breadcrumbs {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .breadcrumbs a {
+            color: var(--dark-blue);
+            text-decoration: none;
+        }
+
+        /* Report Form Styles */
+        .report-form-container {
+            background-color: var(--white);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+        }
+
+        #diseaseReportForm {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            width: 100%;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark-gray);
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background-color: var(--light-gray);
+        }
+
+        .form-group select {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 1em;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: var(--dark-blue);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(58, 123, 213, 0.2);
+            background-color: var(--white);
+        }
+
+        .form-actions {
+            grid-column: span 2;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .btn-primary {
+            padding: 14px 30px;
+            background-color: var(--dark-blue);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .btn-primary i {
+            margin-right: 8px;
+        }
+
+        .btn-primary:hover {
+            background-color: #2a65b7;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(58, 123, 213, 0.3);
+        }
+
+        /* Report Guidelines */
+        .report-guidelines {
+            background-color: var(--white);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+        }
+
+        .report-guidelines h3 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: var(--dark-blue);
+            display: flex;
+            align-items: center;
+        }
+
+        .report-guidelines h3 i {
+            margin-right: 10px;
+        }
+
+        .report-guidelines ul {
+            list-style-type: none;
+        }
+
+        .report-guidelines li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .report-guidelines li::before {
+            content: '•';
+            color: var(--dark-blue);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        /* Recent Reports Section */
+        .recent-reports {
+            margin-top: 40px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .section-header h2 {
+            font-size: 1.4rem;
+            color: var (--dark-gray);
+            font-weight: 600;
+        }
+
+        .reports-table {
+            background-color: var(--white);
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 16px 20px;
+            text-align: left;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        th {
+            background-color: #f5f9ff;
+            font-weight: 600;
+            color: var(--dark-blue);
+        }
+
+        tr:hover {
+            background-color: var(--pastel-blue);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .status-high {
+            background-color: #ffebee;
+            color: #d32f2f;
+        }
+
+        .status-medium {
+            background-color: #fff8e1;
+            color: #ff8f00;
+        }
+
+        .status-low {
+            background-color: #e8f5e9;
+            color: #388e3c;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 992px) {
+            #diseaseReportForm {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-actions {
+                grid-column: span 1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 80px;
+                overflow: hidden;
+            }
+            
+            .sidebar-header h2,
+            .sidebar-menu a span,
+            .user-info .panchayat,
+            .btn-logout span {
+                display: none;
+            }
+            
+            .sidebar-menu a {
+                justify-content: center;
+                padding: 15px 0;
+                margin: 5px;
+            }
+            
+            .sidebar-menu a i {
+                margin-right: 0;
+                font-size: 1.2rem;
+            }
+            
+            .main-content {
+                margin-left: 80px;
+            }
+            
+            .user-profile {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .content-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-shield-virus"></i>
+                </div>
+                <h2>Health Horizon</h2>
+            </div>
+            
+            <div class="sidebar-menu">
+                <a href="#" id="reportDiseaseLink" class="active">
+                    <i class="fas fa-plus-circle"></i>
+                    <span>Report Disease</span>
+                </a>
+                <a href="#" id="historyLink">
+                    <i class="fas fa-history"></i>
+                    <span>Report History</span>
+                </a>
+                <a href="#" id="riskMapLink">
+                    <i class="fas fa-map-marked-alt"></i>
+                    <span>Risk Map</span>
+                </a>
+            </div>
+            
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <div class="avatar">JD</div>
+                    <div class="user-info">
+                        <span class="username">John Doe</span>
+                        <span class="panchayat">Panchayat XYZ</span>
+                    </div>
+                </div>
+                <button class="btn-logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="content-header">
+                <h1 id="pageTitle">Report Disease</h1>
+                <div class="breadcrumbs">
+                    <a href="dashboard.html">Dashboard</a> / <span id="breadcrumbText">Report Disease</span>
+                </div>
+            </div>
+            
+            <!-- Report Disease Section -->
+            <div id="reportSection">
+                <div class="report-form-container">
+                    <form id="diseaseReportForm" onsubmit="handleFormSubmit(event)">
+                        <div class="form-group">
+
+                            <div class="form-group">
+                                <label for="sourcePanchayat">User Name</label>
+                                <input type="text" id="username" required placeholder="Enter username">
+                            </div>
+                            
+                            <label for="diseaseName">Disease Name</label>
+                            <select id="diseaseName" required>
+                                <option value="">Select a disease</option>
+                                <option value="Malaria">Malaria</option>
+                                <option value="Dengue">Dengue</option>
+                                <option value="Chikungunya">Chikungunya</option>
+                                <option value="COVID-19">COVID-19</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="sourcePanchayat">Source Panchayat</label>
+                            <input type="text" id="sourcePanchayat" required placeholder="Enter source panchayat">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="destinationPanchayat">Destination Panchayat</label>
+                            <input type="text" id="destinationPanchayat" required placeholder="Enter destination panchayat">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="travelDuration">Travel Duration (days)</label>
+                            <input type="number" id="travelDuration" min="1" required placeholder="Enter duration in days">
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="submit" class="btn-primary">
+                                <i class="fas fa-paper-plane"></i> Submit Report
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Recent Reports Section -->
+            <div id="historySection" style="display: none;">
+                <div class="section-header">
+                    <h2>Your Recent Reports</h2>
+                </div>
+                <div class="reports-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Disease</th>
+                                <th>Source</th>
+                                <th>Destination</th>
+                                <th>Duration</th>
+                                <th>Status</th>
+                                <th>Reported At</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Dengue</td>
+                                <td>Panchayat A</td>
+                                <td>Panchayat B</td>
+                                <td>3 days</td>
+                                <td><span class="status-badge status-high">High Risk</span></td>
+                                <td>Today, 10:30 AM</td>
+                            </tr>
+                            <tr>
+                                <td>Malaria</td>
+                                <td>Panchayat C</td>
+                                <td>Panchayat D</td>
+                                <td>5 days</td>
+                                <td><span class="status-badge status-medium">Medium Risk</span></td>
+                                <td>Yesterday, 4:15 PM</td>
+                            </tr>
+                            <tr>
+                                <td>COVID-19</td>
+                                <td>Panchayat E</td>
+                                <td>Panchayat F</td>
+                                <td>2 days</td>
+                                <td><span class="status-badge status-low">Low Risk</span></td>
+                                <td>2 days ago</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Risk Map Section -->
+            <div id="riskMapSection" style="display: none;">
+                <div class="section-header">
+                    <h2 onclick="navigateToMap()" style="cursor: pointer; display: flex; align-items: center; gap: 8px;">
+                        <i class="fas fa-map-marked-alt" style="color: #e74c3c;"></i>
+                        Disease Risk Map
+                    </h2>
+                </div>
+                <div class="map-description" style="margin-top: 15px; padding: 15px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #e74c3c;">
+                    <p style="margin-bottom: 10px; font-weight: 500;">
+                        <i class="fas fa-info-circle" style="color: #2a7fba; margin-right: 5px;"></i>
+                        Our interactive map shows real-time disease risks in your area, including:
+                    </p>
+                    <ul style="margin-left: 20px; columns: 2; column-gap: 30px;">
+                        <!-- Mosquito-borne diseases -->
+                        <li><i class="fas fa-mosquito" style="color: #e74c3c; width: 20px;"></i> Dengue</li>
+                        <li><i class="fas fa-mosquito" style="color: #27ae60; width: 20px;"></i> Malaria</li>
+                        <li><i class="fas fa-joint" style="color: #f39c12; width: 20px;"></i> Chikungunya</li>
+                        
+                        <!-- Viral diseases -->
+                        <li><i class="fas fa-virus" style="color: #3498db; width: 20px;"></i> COVID-19</li>
+                        <li><i class="fas fa-lungs-virus" style="color: #9b59b6; width: 20px;"></i> HMPV</li>
+                        
+                        <!-- Other diseases -->
+                        <li><i class="fas fa-head-side-cough" style="color: #e67e22; width: 20px;"></i> Influenza</li>
+                        <li><i class="fas fa-thermometer-full" style="color: #c0392b; width: 20px;"></i> Typhoid</li>
+                        <li><i class="fas fa-heartbeat" style="color: #16a085; width: 20px;"></i> Hepatitis</li>
+                    </ul>
+                    
+                    <button onclick="navigateToMap()" style="margin-top: 15px; background: #e74c3c; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 5px;">
+                        <i class="fas fa-map"></i> View Live Map
+                    </button>
+                </div>
+            </div>
+
+
+            
+            <script>
+                function navigateToMap() {
+                    // Navigate to map.html when clicked
+                    window.location.href = "map.html";
+                    
+                    // Alternatively, if you want to open in a new tab:
+                    // window.open("map.html", "_blank");
+                }
+            </script>
+    <script>
+        // Add this at the start of your script
+        // Check if user is logged in
+        document.addEventListener('DOMContentLoaded', function() {
+            const user = JSON.parse(localStorage.getItem('user'));
+            if (!user) {
+                window.location.href = 'auth.html';
+                return;
+            }
+
+            // Update UI with user info
+            document.querySelector('.username').textContent = user.username;
+            document.querySelector('.panchayat').textContent = user.panchayat;
+            document.querySelector('.avatar').textContent = user.username.split(' ').map(n => n[0]).join('').toUpperCase();
+
+            // Handle logout
+            document.querySelector('.btn-logout').addEventListener('click', () => {
+                localStorage.removeItem('user');
+                window.location.href = 'auth.html';
+            });
+        });
+
+        async function handleFormSubmit(event) {
+            event.preventDefault();
+            
+            // Show loading state
+            const submitBtn = event.target.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+            submitBtn.disabled = true;
+            
+            try {
+                const formData = {
+                    username: document.getElementById('username').value,
+                    disease_name: document.getElementById('diseaseName').value,
+                    source_panchayat: document.getElementById('sourcePanchayat').value,
+                    destination_panchayat: document.getElementById('destinationPanchayat').value,
+                    travel_duration_days: parseInt(document.getElementById('travelDuration').value)
+                };
+
+                const response = await fetch('http://127.0.0.1:5000/report_disease', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    alert('Disease reported successfully!');
+                    document.getElementById('diseaseReportForm').reset();
+                    
+                    // Update reports in background
+                    setTimeout(() => {
+                        loadRecentReports();
+                    }, 1000);
+                } else {
+                    alert('Error: ' + (data.error || 'Failed to report disease'));
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Failed to connect to server. Please try again.');
+            } finally {
+                // Restore button state
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        }
+
+        // Add this function to fetch and display recent reports
+        async function loadRecentReports() {
+            try {
+                const response = await fetch('http://127.0.0.1:5000/get_disease_data');
+                const data = await response.json();
+                
+                if (!data.success || !data.reports) {
+                    console.error('Invalid data format:', data);
+                    return;
+                }
+
+                const tbody = document.querySelector('#historySection table tbody');
+                tbody.innerHTML = ''; // Clear existing rows
+                
+                data.reports.forEach(report => {
+                    const row = `
+                        <tr>
+                            <td>${report.disease}</td>
+                            <td>${report.source}</td>
+                            <td>${report.destination}</td>
+                            <td>${report.duration} days</td>
+                            <td><span class="status-badge status-${report.status.toLowerCase().replace(' ', '')}">${report.status}</span></td>
+                            <td>${new Date(report.reported_at).toLocaleString()}</td>
+                        </tr>
+                    `;
+                    tbody.innerHTML += row;
+                });
+            } catch (error) {
+                console.error('Error loading reports:', error);
+            }
+        }
+
+        // Add this test function right after the form submit handler
+        async function testBackendConnection() {
+            try {
+                const response = await fetch('http://127.0.0.1:5000/');
+                const data = await response.json();
+                console.log('Backend connection test:', data);
+                alert('Backend connection successful: ' + data.message);
+            } catch (error) {
+                console.error('Backend connection test failed:', error);
+                alert('Backend connection failed. Check console for details.');
+            }
+        }
+
+        // Add a test button in the form
+        document.getElementById('diseaseReportForm').innerHTML += `
+            <div class="form-actions" style="margin-top: 10px;">
+                <button type="button" class="btn-primary" onclick="testBackendConnection()">
+                    <i class="fas fa-plug"></i> Test Connection
+                </button>
+            </div>
+        `;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const reportDiseaseLink = document.getElementById('reportDiseaseLink');
+            const historyLink = document.getElementById('historyLink');
+            const riskMapLink = document.getElementById('riskMapLink');
+            const reportSection = document.getElementById('reportSection');
+            const historySection = document.getElementById('historySection');
+            const riskMapSection = document.getElementById('riskMapSection');
+            const pageTitle = document.getElementById('pageTitle');
+            const breadcrumbText = document.getElementById('breadcrumbText');
+
+            // Function to hide all sections
+            function hideAllSections() {
+                reportSection.style.display = 'none';
+                historySection.style.display = 'none';
+                riskMapSection.style.display = 'none';
+                // Remove active class from all links
+                reportDiseaseLink.classList.remove('active');
+                historyLink.classList.remove('active');
+                riskMapLink.classList.remove('active');
+            }
+
+            // Show Report Disease section by default
+            hideAllSections();
+            reportSection.style.display = 'block';
+            reportDiseaseLink.classList.add('active');
+
+            reportDiseaseLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                hideAllSections();
+                reportSection.style.display = 'block';
+                pageTitle.textContent = 'Report Disease';
+                breadcrumbText.textContent = 'Report Disease';
+                reportDiseaseLink.classList.add('active');
+            });
+
+            historyLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                hideAllSections();
+                historySection.style.display = 'block';
+                pageTitle.textContent = 'Your Recent Reports';
+                breadcrumbText.textContent = 'Report History';
+                historyLink.classList.add('active');
+                loadRecentReports(); // Load reports when tab is clicked
+            });
+
+            riskMapLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                hideAllSections();
+                riskMapSection.style.display = 'block';
+                pageTitle.textContent = 'Disease Risk Map';
+                breadcrumbText.textContent = 'Risk Map';
+                riskMapLink.classList.add('active');
+            });
+
+            // Load reports on page load
+            loadRecentReports();
+        });
+    </script>
+</body>
+</html>

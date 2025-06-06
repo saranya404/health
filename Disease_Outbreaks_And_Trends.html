@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Disease Outbreaks & Trends | Health Horizon</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.css">
+    <style>
+        :root {
+            --primary-blue: #3a7bd5;
+            --light-blue: #a8d8ea;
+            --dark-blue: #1a4b8c;
+            --white: #ffffff;
+            --light-gray: #f8f9fa;
+            --alert-red: #ff5252;
+            --warning-orange: #ffab40;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light-gray);
+        }
+        
+        .outbreaks-header {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--dark-blue) 100%);
+            color: white;
+            padding: 80px 0;
+            margin-bottom: 50px;
+        }
+        
+        .alert-card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            transition: transform 0.3s ease;
+            overflow: hidden;
+        }
+        
+        .alert-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .alert-critical {
+            border-left: 5px solid var(--alert-red);
+        }
+        
+        .alert-warning {
+            border-left: 5px solid var(--warning-orange);
+        }
+        
+        .alert-info {
+            border-left: 5px solid var(--primary-blue);
+        }
+        
+        .alert-level {
+            font-weight: 600;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            display: inline-block;
+        }
+        
+        .critical {
+            background-color: #ffebee;
+            color: var(--alert-red);
+        }
+        
+        .warning {
+            background-color: #fff8e1;
+            color: var(--warning-orange);
+        }
+        
+        .info {
+            background-color: var(--light-blue);
+            color: var(--dark-blue);
+        }
+        
+        #outbreak-map {
+            height: 500px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .trend-card {
+            background-color: var(--white);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            height: 100%;
+        }
+        
+        .trend-icon {
+            font-size: 2rem;
+            color: var(--primary-blue);
+            margin-bottom: 15px;
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--dark-blue);
+            line-height: 1;
+        }
+        
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: var(--light-blue);
+        }
+        
+        .timeline-item {
+            position: relative;
+            padding-bottom: 20px;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -30px;
+            top: 5px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: var(--primary-blue);
+            border: 4px solid var(--light-blue);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+        <div class="container">
+            <a href="index.html" class="navbar-brand d-flex align-items-center">
+                <img src="logo.jpg" alt="Health Horizon Logo" class="me-2" style="height: 40px;">
+                <h1 class="m-0 text-primary">Health Horizon</h1>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <div class="outbreaks-header text-center">
+        <div class="container">
+            <h1 class="display-4 fw-bold mb-4">Disease Outbreaks & Trends</h1>
+            <p class="lead">Real-time monitoring of emerging health threats in your region</p>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <section class="container mb-5">
+        <!-- Interactive Map -->
+        <div class="row mb-5">
+            <div class="col-12">
+                <h2 class="mb-4"><i class="fas fa-map-marked-alt text-primary me-2"></i> Current Outbreak Map</h2>
+                <div id="outbreak-map"></div>
+                <div class="text-end mt-2">
+                    <small class="text-muted">Last updated: <span id="update-time"></span></small>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Alerts Section -->
+        <div class="row mb-5">
+            <div class="col-12">
+                <h2 class="mb-4"><i class="fas fa-exclamation-triangle text-primary me-2"></i> Active Alerts</h2>
+                
+                <div class="alert-card card alert-critical mb-3">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <span class="alert-level critical">CRITICAL</span>
+                                <h3 class="mt-2">Dengue Outbreak in South District</h3>
+                                <p class="mb-2">Confirmed cases have doubled in the past week. Health authorities declare emergency measures.</p>
+                            </div>
+                            <div class="text-end">
+                                <small class="text-muted">Reported: Today</small>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <span class="badge bg-light text-dark me-2"><i class="fas fa-user-injured me-1"></i> 142 cases</span>
+                            <span class="badge bg-light text-dark me-2"><i class="fas fa-map-marker-alt me-1"></i> 5 localities affected</span>
+                            <span class="badge bg-light text-dark"><i class="fas fa-arrow-up me-1"></i> 78% increase</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="alert-card card alert-warning mb-3">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <span class="alert-level warning">WARNING</span>
+                                <h3 class="mt-2">Malaria Surge in Northern Regions</h3>
+                                <p class="mb-2">Unseasonal rainfall has led to increased mosquito breeding. 30% rise in cases reported.</p>
+                            </div>
+                            <div class="text-end">
+                                <small class="text-muted">Reported: 2 days ago</small>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <span class="badge bg-light text-dark me-2"><i class="fas fa-user-injured me-1"></i> 87 cases</span>
+                            <span class="badge bg-light text-dark me-2"><i class="fas fa-map-marker-alt me-1"></i> 3 villages affected</span>
+                            <span class="badge bg-light text-dark"><i class="fas fa-arrow-up me-1"></i> 30% increase</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="alert-card card alert-info">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <span class="alert-level info">ADVISORY</span>
+                                <h3 class="mt-2">Seasonal Influenza Activity Rising</h3>
+                                <p class="mb-2">Early onset of flu season detected. Vaccination clinics being set up in urban centers.</p>
+                            </div>
+                            <div class="text-end">
+                                <small class="text-muted">Reported: 1 week ago</small>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <span class="badge bg-light text-dark me-2"><i class="fas fa-user-injured me-1"></i> 215 cases</span>
+                            <span class="badge bg-light text-dark me-2"><i class="fas fa-map-marker-alt me-1"></i> Widespread</span>
+                            <span class="badge bg-light text-dark"><i class="fas fa-arrow-up me-1"></i> 45% increase</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Statistics Section -->
+        <div class="row mb-5">
+            <div class="col-md-4 mb-4">
+                <div class="trend-card text-center">
+                    <i class="fas fa-virus trend-icon"></i>
+                    <div class="stat-number">14</div>
+                    <div class="stat-label">Active Outbreaks</div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="trend-card text-center">
+                    <i class="fas fa-arrow-up trend-icon"></i>
+                    <div class="stat-number">62%</div>
+                    <div class="stat-label">Increase in Vector-Borne Diseases</div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="trend-card text-center">
+                    <i class="fas fa-map-marked-alt trend-icon"></i>
+                    <div class="stat-number">8</div>
+                    <div class="stat-label">Regions Under Watch</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Recent Trends Timeline -->
+        <div class="row">
+            <div class="col-lg-6 mb-4">
+                <div class="trend-card">
+                    <h3><i class="fas fa-chart-line text-primary me-2"></i> Weekly Trends</h3>
+                    <div class="timeline mt-4">
+                        <div class="timeline-item">
+                            <h5>Dengue Cases Spike</h5>
+                            <p class="text-muted">South District reports 42 new cases this week</p>
+                            <small class="text-muted">3 days ago</small>
+                        </div>
+                        <div class="timeline-item">
+                            <h5>Malaria Cluster Identified</h5>
+                            <p class="text-muted">Northern villages show unusual activity pattern</p>
+                            <small class="text-muted">1 week ago</small>
+                        </div>
+                        <div class="timeline-item">
+                            <h5>Flu Season Begins Early</h5>
+                            <p class="text-muted">First cases reported 3 weeks ahead of schedule</p>
+                            <small class="text-muted">2 weeks ago</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-6 mb-4">
+                <div class="trend-card">
+                    <h3><i class="fas fa-bullhorn text-primary me-2"></i> Prevention Updates</h3>
+                    <div class="mt-4">
+                        <div class="d-flex mb-3">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-syringe text-primary me-3" style="font-size: 1.5rem;"></i>
+                            </div>
+                            <div>
+                                <h5>Vaccination Drive</h5>
+                                <p class="mb-1">Mobile clinics deployed in high-risk areas for dengue prevention</p>
+                                <small class="text-muted">Started yesterday</small>
+                            </div>
+                        </div>
+                        <div class="d-flex mb-3">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-spray-can text-primary me-3" style="font-size: 1.5rem;"></i>
+                            </div>
+                            <div>
+                                <h5>Fogging Operations</h5>
+                                <p class="mb-1">Targeted mosquito control in 5 high-risk neighborhoods</p>
+                                <small class="text-muted">Ongoing</small>
+                            </div>
+                        </div>
+                        <div class="d-flex">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-hand-holding-water text-primary me-3" style="font-size: 1.5rem;"></i>
+                            </div>
+                            <div>
+                                <h5>Sanitation Campaign</h5>
+                                <p class="mb-1">Community clean-up initiative to eliminate breeding sites</p>
+                                <small class="text-muted">Starting next week</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+        // Initialize map
+        const map = L.map('outbreak-map').setView([20.5937, 78.9629], 5); // Centered on India
+        
+        // Add tile layer
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+        
+        // Add outbreak markers (sample data)
+        const outbreaks = [
+            { lat: 19.0760, lng: 72.8777, name: "Mumbai", disease: "Dengue", cases: 42, level: "critical" },
+            { lat: 28.6139, lng: 77.2090, name: "Delhi", disease: "Influenza", cases: 215, level: "warning" },
+            { lat: 12.9716, lng: 77.5946, name: "Bangalore", disease: "COVID-19", cases: 18, level: "info" },
+            { lat: 17.3850, lng: 78.4867, name: "Hyderabad", disease: "Malaria", cases: 28, level: "warning" },
+            { lat: 13.0827, lng: 80.2707, name: "Chennai", disease: "Dengue", cases: 15, level: "info" }
+        ];
+        
+        // Marker icons
+        const criticalIcon = L.divIcon({
+            className: 'outbreak-marker critical',
+            html: '<i class="fas fa-biohazard"></i>',
+            iconSize: [30, 30]
+        });
+        
+        const warningIcon = L.divIcon({
+            className: 'outbreak-marker warning',
+            html: '<i class="fas fa-exclamation-triangle"></i>',
+            iconSize: [30, 30]
+        });
+        
+        const infoIcon = L.divIcon({
+            className: 'outbreak-marker info',
+            html: '<i class="fas fa-info-circle"></i>',
+            iconSize: [30, 30]
+        });
+        
+        // Add markers to map
+        outbreaks.forEach(outbreak => {
+            const icon = outbreak.level === "critical" ? criticalIcon : 
+                         outbreak.level === "warning" ? warningIcon : infoIcon;
+            
+            const marker = L.marker([outbreak.lat, outbreak.lng], { icon }).addTo(map);
+            marker.bindPopup(`
+                <b>${outbreak.name}</b><br>
+                Disease: ${outbreak.disease}<br>
+                Cases: ${outbreak.cases}<br>
+                Status: ${outbreak.level.toUpperCase()}
+            `);
+        });
+        
+        // Update time
+        document.getElementById('update-time').textContent = new Date().toLocaleString();
+        
+        // Add marker styling
+        const style = document.createElement('style');
+        style.textContent = `
+            .outbreak-marker {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: white;
+                border-radius: 50%;
+                border: 2px solid white;
+            }
+            .critical {
+                background-color: var(--alert-red);
+            }
+            .warning {
+                background-color: var(--warning-orange);
+            }
+            .info {
+                background-color: var(--primary-blue);
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

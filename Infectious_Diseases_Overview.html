@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infectious Diseases Overview</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --accent: #f72585;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --text: #495057;
+            --gray: #adb5bd;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+            padding: 2rem 0;
+        }
+        
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            border-radius: 2px;
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 700;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--gray);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .disease-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+        
+        .disease-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .disease-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+        }
+        
+        .card-header {
+            padding: 1.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            position: relative;
+        }
+        
+        .card-header h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+        }
+        
+        .card-header h2 i {
+            margin-right: 0.8rem;
+            font-size: 1.3rem;
+        }
+        
+        .card-body {
+            padding: 1.5rem;
+        }
+        
+        .disease-icon {
+            position: absolute;
+            right: 1.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2.5rem;
+            opacity: 0.2;
+        }
+        
+        .basic-info {
+            margin-bottom: 1.5rem;
+        }
+        
+        .info-item {
+            display: flex;
+            margin-bottom: 0.8rem;
+        }
+        
+        .info-label {
+            font-weight: 600;
+            color: var(--dark);
+            min-width: 120px;
+        }
+        
+        .info-value {
+            color: var(--text);
+        }
+        
+        .read-more-btn {
+            display: inline-flex;
+            align-items: center;
+            background: var(--light);
+            color: var(--primary);
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+            box-shadow: 0 2px 10px rgba(67, 97, 238, 0.1);
+        }
+        
+        .read-more-btn:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.2);
+        }
+        
+        .read-more-btn i {
+            margin-left: 0.5rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .read-more-btn:hover i {
+            transform: translateX(3px);
+        }
+        
+        .hidden-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+        }
+        
+        .hidden-content.show {
+            max-height: 1000px;
+            padding-top: 1.5rem;
+        }
+        
+        .symptoms, .prevention {
+            background: rgba(248, 249, 250, 0.8);
+            padding: 1.2rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .symptoms {
+            border-left-color: var(--accent);
+        }
+        
+        h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+        }
+        
+        h3 i {
+            margin-right: 0.6rem;
+            color: var(--primary);
+        }
+        
+        .symptoms h3 i {
+            color: var(--accent);
+        }
+        
+        ul {
+            padding-left: 1.5rem;
+        }
+        
+        li {
+            margin-bottom: 0.5rem;
+            position: relative;
+        }
+        
+        li::before {
+            content: '•';
+            color: var(--primary);
+            font-weight: bold;
+            display: inline-block;
+            width: 1em;
+            margin-left: -1em;
+        }
+        
+        .symptoms li::before {
+            color: var(--accent);
+        }
+        
+        @media (max-width: 768px) {
+            .disease-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .card-header h2 {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Infectious Diseases Overview</h1>
+            <p class="subtitle">Comprehensive information about common infectious diseases, their symptoms, and prevention methods</p>
+        </header>
+        
+        <div class="disease-grid">
+            <!-- COVID-19 Card -->
+            <div class="disease-card">
+                <div class="card-header">
+                    <h2><i class="fas fa-virus"></i> COVID-19</h2>
+                    <i class="fas fa-lungs-virus disease-icon"></i>
+                </div>
+                <div class="card-body">
+                    <div class="basic-info">
+                        <div class="info-item">
+                            <span class="info-label">Caused by:</span>
+                            <span class="info-value">SARS-CoV-2 virus</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Transmission:</span>
+                            <span class="info-value">Respiratory droplets, airborne</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Incubation:</span>
+                            <span class="info-value">2-14 days</span>
+                        </div>
+                    </div>
+                    
+                    <button class="read-more-btn">
+                        Read More <i class="fas fa-chevron-down"></i>
+                    </button>
+                    
+                    <div class="hidden-content">
+                        <div class="symptoms">
+                            <h3><i class="fas fa-thermometer-half"></i> Symptoms</h3>
+                            <ul>
+                                <li>Fever or chills</li>
+                                <li>Cough and shortness of breath</li>
+                                <li>Fatigue and muscle aches</li>
+                                <li>Loss of taste or smell</li>
+                                <li>Sore throat and headache</li>
+                                <li>Nausea or diarrhea (less common)</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="prevention">
+                            <h3><i class="fas fa-shield-virus"></i> Prevention</h3>
+                            <ul>
+                                <li>Vaccination and booster shots</li>
+                                <li>Wearing masks in crowded places</li>
+                                <li>Frequent hand washing with soap</li>
+                                <li>Maintaining social distance</li>
+                                <li>Proper indoor ventilation</li>
+                                <li>Isolation when symptomatic</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Influenza Card -->
+            <div class="disease-card">
+                <div class="card-header">
+                    <h2><i class="fas fa-head-side-cough"></i> Influenza</h2>
+                    <i class="fas fa-temperature-high disease-icon"></i>
+                </div>
+                <div class="card-body">
+                    <div class="basic-info">
+                        <div class="info-item">
+                            <span class="info-label">Caused by:</span>
+                            <span class="info-value">Influenza viruses</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Transmission:</span>
+                            <span class="info-value">Respiratory droplets</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Incubation:</span>
+                            <span class="info-value">1-4 days</span>
+                        </div>
+                    </div>
+                    
+                    <button class="read-more-btn">
+                        Read More <i class="fas fa-chevron-down"></i>
+                    </button>
+                    
+                    <div class="hidden-content">
+                        <div class="symptoms">
+                            <h3><i class="fas fa-thermometer-half"></i> Symptoms</h3>
+                            <ul>
+                                <li>Sudden high fever</li>
+                                <li>Muscle and joint pain</li>
+                                <li>Headache and fatigue</li>
+                                <li>Dry cough and sore throat</li>
+                                <li>Runny or stuffy nose</li>
+                                <li>Sometimes vomiting/diarrhea (in children)</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="prevention">
+                            <h3><i class="fas fa-shield-virus"></i> Prevention</h3>
+                            <ul>
+                                <li>Annual flu vaccination</li>
+                                <li>Avoid close contact with sick people</li>
+                                <li>Cover coughs and sneezes</li>
+                                <li>Stay home when symptomatic</li>
+                                <li>Regular hand hygiene</li>
+                                <li>Disinfect frequently touched surfaces</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Dengue Card -->
+            <div class="disease-card">
+                <div class="card-header">
+                    <h2><i class="fas fa-mosquito"></i> Dengue</h2>
+                    <i class="fas fa-bug disease-icon"></i>
+                </div>
+                <div class="card-body">
+                    <div class="basic-info">
+                        <div class="info-item">
+                            <span class="info-label">Caused by:</span>
+                            <span class="info-value">Dengue virus (DENV)</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Transmission:</span>
+                            <span class="info-value">Aedes mosquitoes</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Incubation:</span>
+                            <span class="info-value">4-10 days</span>
+                        </div>
+                    </div>
+                    
+                    <button class="read-more-btn">
+                        Read More <i class="fas fa-chevron-down"></i>
+                    </button>
+                    
+                    <div class="hidden-content">
+                        <div class="symptoms">
+                            <h3><i class="fas fa-thermometer-half"></i> Symptoms</h3>
+                            <ul>
+                                <li>High fever (104°F/40°C)</li>
+                                <li>Severe headache</li>
+                                <li>Pain behind the eyes</li>
+                                <li>Muscle and joint pain</li>
+                                <li>Nausea and vomiting</li>
+                                <li>Skin rash (appears 2-5 days after fever)</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="prevention">
+                            <h3><i class="fas fa-shield-virus"></i> Prevention</h3>
+                            <ul>
+                                <li>Mosquito control measures</li>
+                                <li>Use of EPA-registered repellents</li>
+                                <li>Wearing long-sleeved clothing</li>
+                                <li>Eliminating standing water</li>
+                                <li>Window and door screens</li>
+                                <li>Avoiding outdoor activities at peak biting times</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- HMPV Card -->
+            <div class="disease-card">
+                <div class="card-header">
+                    <h2><i class="fas fa-viruses"></i> HMPV</h2>
+                    <i class="fas fa-lungs disease-icon"></i>
+                </div>
+                <div class="card-body">
+                    <div class="basic-info">
+                        <div class="info-item">
+                            <span class="info-label">Caused by:</span>
+                            <span class="info-value">Human metapneumovirus</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Transmission:</span>
+                            <span class="info-value">Respiratory droplets</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Incubation:</span>
+                            <span class="info-value">3-6 days</span>
+                        </div>
+                    </div>
+                    
+                    <button class="read-more-btn">
+                        Read More <i class="fas fa-chevron-down"></i>
+                    </button>
+                    
+                    <div class="hidden-content">
+                        <div class="symptoms">
+                            <h3><i class="fas fa-thermometer-half"></i> Symptoms</h3>
+                            <ul>
+                                <li>Cough and nasal congestion</li>
+                                <li>Fever and sore throat</li>
+                                <li>Shortness of breath</li>
+                                <li>Wheezing (especially in children)</li>
+                                <li>Pneumonia in severe cases</li>
+                                <li>Acute bronchitis</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="prevention">
+                            <h3><i class="fas fa-shield-virus"></i> Prevention</h3>
+                            <ul>
+                                <li>Frequent hand washing</li>
+                                <li>Avoiding touching face with unwashed hands</li>
+                                <li>Avoiding close contact with sick individuals</li>
+                                <li>Covering coughs and sneezes</li>
+                                <li>Disinfecting frequently touched surfaces</li>
+                                <li>Staying home when sick</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.querySelectorAll('.read-more-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                const card = button.closest('.disease-card');
+                const content = card.querySelector('.hidden-content');
+                const icon = button.querySelector('i');
+                
+                content.classList.toggle('show');
+                
+                if (content.classList.contains('show')) {
+                    button.innerHTML = 'Read Less <i class="fas fa-chevron-up"></i>';
+                    button.style.background = 'var(--primary)';
+                    button.style.color = 'white';
+                } else {
+                    button.innerHTML = 'Read More <i class="fas fa-chevron-down"></i>';
+                    button.style.background = 'var(--light)';
+                    button.style.color = 'var(--primary)';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

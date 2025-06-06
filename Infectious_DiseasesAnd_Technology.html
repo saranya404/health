@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technology in Disease Control | Health Horizon</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-blue: #3a7bd5;
+            --light-blue: #a8d8ea;
+            --dark-blue: #1a4b8c;
+            --white: #ffffff;
+            --light-gray: #f8f9fa;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light-gray);
+        }
+        
+        .tech-header {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--dark-blue) 100%);
+            color: white;
+            padding: 80px 0;
+            margin-bottom: 50px;
+        }
+        
+        .tech-card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            background-color: var(--white);
+            margin-bottom: 30px;
+            transition: transform 0.3s ease;
+            overflow: hidden;
+            height: 100%;
+        }
+        
+        .tech-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .tech-icon {
+            font-size: 2.5rem;
+            color: var(--primary-blue);
+            margin-bottom: 15px;
+        }
+        
+        .tech-badge {
+            background-color: var(--light-blue);
+            color: var(--dark-blue);
+            font-weight: 500;
+            padding: 5px 15px;
+            border-radius: 20px;
+            display: inline-block;
+            margin: 3px;
+            font-size: 0.8rem;
+        }
+        
+        .case-study {
+            background-color: var(--light-blue);
+            border-radius: 10px;
+            padding: 25px;
+            margin: 30px 0;
+            border-left: 5px solid var(--primary-blue);
+        }
+        
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: var(--light-blue);
+        }
+        
+        .timeline-item {
+            position: relative;
+            padding-bottom: 25px;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -30px;
+            top: 5px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: var(--primary-blue);
+            border: 4px solid var(--light-blue);
+        }
+        
+        .tech-video {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+        <div class="container">
+            <a href="index.html" class="navbar-brand d-flex align-items-center">
+                <img src="logo.jpg" alt="Health Horizon Logo" class="me-2" style="height: 40px;">
+                <h1 class="m-0 text-primary">Health Horizon</h1>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <div class="tech-header text-center">
+        <div class="container">
+            <h1 class="display-4 fw-bold mb-4">Technology in Infectious Disease Control</h1>
+            <p class="lead">Innovative solutions transforming how we track, predict, and prevent outbreaks</p>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <section class="container mb-5">
+        <!-- Intro Section -->
+        <div class="row mb-5">
+            <div class="col-12">
+                <div class="card border-0 bg-light">
+                    <div class="card-body">
+                        <p class="lead">Modern technology is revolutionizing infectious disease surveillance and response. From AI-powered prediction models to blockchain-enabled supply chains, discover how cutting-edge tools are creating healthier communities worldwide.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Technology Cards -->
+        <div class="row mb-5">
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="tech-card card h-100">
+                    <div class="card-body text-center">
+                        <div class="tech-icon">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <h3>AI & Machine Learning</h3>
+                        <p>Predictive algorithms analyze patterns to forecast outbreaks before they occur, enabling proactive interventions.</p>
+                        <div class="mt-3">
+                            <span class="tech-badge">Pattern Recognition</span>
+                            <span class="tech-badge">Risk Prediction</span>
+                            <span class="tech-badge">Early Warning</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="tech-card card h-100">
+                    <div class="card-body text-center">
+                        <div class="tech-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <h3>Mobile Surveillance</h3>
+                        <p>Community reporting apps and contact tracing technologies help identify and contain outbreaks faster.</p>
+                        <div class="mt-3">
+                            <span class="tech-badge">Contact Tracing</span>
+                            <span class="tech-badge">Crowdsourcing</span>
+                            <span class="tech-badge">Real-time Data</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="tech-card card h-100">
+                    <div class="card-body text-center">
+                        <div class="tech-icon">
+                            <i class="fas fa-dna"></i>
+                        </div>
+                        <h3>Genomic Sequencing</h3>
+                        <p>Rapid pathogen genome analysis helps track transmission routes and detect emerging variants.</p>
+                        <div class="mt-3">
+                            <span class="tech-badge">Variant Detection</span>
+                            <span class="tech-badge">Transmission Mapping</span>
+                            <span class="tech-badge">Vaccine Development</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="tech-card card h-100">
+                    <div class="card-body text-center">
+                        <div class="tech-icon">
+                            <i class="fas fa-map-marked-alt"></i>
+                        </div>
+                        <h3>GIS Mapping</h3>
+                        <p>Spatial analysis identifies high-risk areas and optimizes resource allocation during outbreaks.</p>
+                        <div class="mt-3">
+                            <span class="tech-badge">Hotspot Identification</span>
+                            <span class="tech-badge">Resource Optimization</span>
+                            <span class="tech-badge">Cluster Detection</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="tech-card card h-100">
+                    <div class="card-body text-center">
+                        <div class="tech-icon">
+                            <i class="fas fa-shield-virus"></i>
+                        </div>
+                        <h3>Blockchain</h3>
+                        <p>Secure, transparent systems for vaccine distribution and medical supply chains.</p>
+                        <div class="mt-3">
+                            <span class="tech-badge">Supply Chain</span>
+                            <span class="tech-badge">Vaccine Verification</span>
+                            <span class="tech-badge">Data Integrity</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="tech-card card h-100">
+                    <div class="card-body text-center">
+                        <div class="tech-icon">
+                            <i class="fas fa-cloud-sun-rain"></i>
+                        </div>
+                        <h3>Climate Modeling</h3>
+                        <p>Predicting how environmental changes will impact disease transmission patterns.</p>
+                        <div class="mt-3">
+                            <span class="tech-badge">Vector Forecasting</span>
+                            <span class="tech-badge">Seasonal Patterns</span>
+                            <span class="tech-badge">Risk Projection</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Case Study -->
+        <div class="row">
+            <div class="col-12">
+                <div class="case-study">
+                    <h3 class="text-primary"><i class="fas fa-microscope me-2"></i> Case Study: AI in Dengue Prevention</h3>
+                    <p>In 2022, our AI system successfully predicted dengue outbreaks in 3 regions with 89% accuracy, enabling targeted mosquito control efforts that reduced cases by 42% compared to previous years. The system analyzes weather patterns, historical case data, and real-time community reports to identify high-risk areas.</p>
+                    <div class="row mt-3">
+                        <div class="col-md-4">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-check-circle text-primary me-2"></i>
+                                <span>89% Prediction Accuracy</span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-arrow-down text-primary me-2"></i>
+                                <span>42% Case Reduction</span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-clock text-primary me-2"></i>
+                                <span>2-Week Early Warning</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Technology Timeline -->
+        <div class="row mt-5">
+            <div class="col-lg-6">
+                <h3 class="mb-4"><i class="fas fa-history text-primary me-2"></i> Evolution of Disease Tech</h3>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <h5>2015: Mobile Surveillance</h5>
+                        <p>First large-scale use of mobile apps for community disease reporting in West Africa during Ebola outbreak.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h5>2018: AI Predictions</h5>
+                        <p>Machine learning models demonstrated 75% accuracy in predicting dengue outbreaks 4 weeks in advance.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h5>2020: Digital Contact Tracing</h5>
+                        <p>Bluetooth-based exposure notification systems deployed globally during COVID-19 pandemic.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h5>2023: Genomic Surveillance</h5>
+                        <p>Real-time pathogen sequencing reduced variant identification time from weeks to days.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-6">
+                <h3 class="mb-4"><i class="fas fa-video text-primary me-2"></i> How It Works</h3>
+                <div class="tech-video ratio ratio-16x9">
+                    <iframe src="https://www.youtube.com/embed/EXAMPLE" allowfullscreen></iframe>
+                </div>
+                <div class="card mt-3">
+                    <div class="card-body">
+                        <h5><i class="fas fa-download text-primary me-2"></i> Resources</h5>
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><a href="#"><i class="fas fa-file-pdf me-2"></i> White Paper: AI in Disease Prevention</a></li>
+                            <li class="mb-2"><a href="#"><i class="fas fa-chart-bar me-2"></i> Technology Impact Report 2023</a></li>
+                            <li><a href="#"><i class="fas fa-tools me-2"></i> Developer API Documentation</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
