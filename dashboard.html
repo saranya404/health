@@ -695,7 +695,7 @@
                     travel_duration_days: parseInt(document.getElementById('travelDuration').value)
                 };
 
-                const response = await fetch('http://127.0.0.1:5000/report_disease', {
+                const response = await fetch('https://tist-miniproject-health-horizon.onrender.com/report_disease', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -728,7 +728,7 @@
         // Add this function to fetch and display recent reports
         async function loadRecentReports() {
             try {
-                const response = await fetch('http://127.0.0.1:5000/get_disease_data');
+                const response = await fetch('https://tist-miniproject-health-horizon.onrender.com/get_disease_data');
                 const data = await response.json();
                 
                 if (!data.success || !data.reports) {
@@ -760,7 +760,7 @@
         // Add this test function right after the form submit handler
         async function testBackendConnection() {
             try {
-                const response = await fetch('http://127.0.0.1:5000/');
+                const response = await fetch('https://tist-miniproject-health-horizon.onrender.com/');
                 const data = await response.json();
                 console.log('Backend connection test:', data);
                 alert('Backend connection successful: ' + data.message);
