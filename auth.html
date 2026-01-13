@@ -325,6 +325,9 @@
 
    
     <script>
+        // Set API base URL - change this for production
+        const API_BASE_URL = 'https://tist-miniproject-health-horizon.onrender.com';
+
         document.addEventListener('DOMContentLoaded', () => {
             const loginTab = document.getElementById('loginTab');
             const registerTab = document.getElementById('registerTab');
@@ -358,7 +361,7 @@
                 };
 
                 try {
-                    const response = await fetch('http://127.0.0.1:5000/register', {
+                    const response = await fetch(`${API_BASE_URL}/register`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -389,7 +392,7 @@
                 };
 
                 try {
-                    const response = await fetch('http://127.0.0.1:5000/login', {
+                    const response = await fetch(`${API_BASE_URL}/login`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -415,5 +418,5 @@
 </html>
 
 
-    
+
 

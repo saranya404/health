@@ -160,7 +160,9 @@
     </div>
 
     <script>
-        // Panchayat coordinates mapping
+        // Set API base URL
+        const API_BASE_URL = 'https://tist-miniproject-health-horizon.onrender.com';
+
         const PANCHAYAT_COORDINATES = {
             'Aluva': [10.1004, 76.3570],
             'Angamaly': [10.1960, 76.3860],
@@ -183,36 +185,21 @@
         let map;
         let markers = [];
 
-        //fetching data from the api
-        
-        //1.When fetchRiskData() is called in map.html:
-       //Makes HTTP GET request to Flask backend
-      //URL: http://127.0.0.1:5000/get_disease_data
-
-      //2.Flask backend processes the request:
-        //Queries Firebase database
-        //Gets disease reports
-        //Calculates risk levels
-        //Returns JSON response
-
         async function fetchRiskData() {
-            // Fetches latest disease reports from the backend
-            // Allows real-time updates of risk levels
-            // Shows current disease spread situation
-    try {
-        const response = await fetch('http://127.0.0.1:5000/get_disease_data');
-        const data = await response.json();
-        
-        if (!data.success) {
-            throw new Error('API request was not successful');
+            try {
+                const response = await fetch(`${API_BASE_URL}/get_disease_data`);
+                const data = await response.json();
+                
+                if (!data.success) {
+                    throw new Error('API request was not successful');
+                }
+                
+                return data.reports || [];
+            } catch (error) {
+                console.error('Error fetching disease data:', error);
+                return [];
+            }
         }
-        
-        return data.reports || [];  // Return the reports array directly
-    } catch (error) {
-        console.error('Error fetching disease data:', error);
-        return [];
-    }
-}
 
         function getRiskColor(status) {
             if (status === "High Risk") return '#ff0000';
